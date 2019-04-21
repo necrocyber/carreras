@@ -1,6 +1,7 @@
 # Creamos la vista de Registro
 from tkinter import *
 from tkinter import ttk
+from conection.connec_db import *
 
 class Registro(ttk.Frame):
     def __init__(self, *args, **kwargs):
@@ -20,7 +21,7 @@ class Registro(ttk.Frame):
         # Titutlo de la ventana
         self.titulo = Label(self, text = "Pagina de Registro")
         self.titulo.grid(row = 0, column = 0, columnspan = 2, pady = 10, padx = 10)
-        self.titulo.config(anchor = "center")
+        self.titulo.config(anchor = "e")
         # Input del nombre de la carrera
         Label(self, text = "Nombre Carrera").grid(row = 1, column = 0 ,pady = 10, padx = 10)
         self.entry_nombre = Entry(self, state = "readonly")
@@ -46,5 +47,23 @@ class Registro(ttk.Frame):
         self.tabla.heading("#1", text = "Costo Anual")
         self.tabla.heading("#2", text = "Categoria")
 
+        # Funciones de botones Editar y Eliminar
+        def Editar():
+            pass
+
+        def Eliminar():
+            pass    
+
         # Botones con acciones
         Button(self, text = "Editar").grid(row = 6, column = 0, pady = 10, padx = 10)
+        Button(self, text = "Eliminar").grid(row = 6, column = 1, pady = 10, padx = 10)
+
+        # Listar los datos en la tabla desde sqlite3
+        def listar_datos():
+            query = "SELECT * FROM carreras"
+            conn = Conectar()
+            datos = conn.run_db(query)
+            for carrera in datos:
+                self.tabla.insert('', 0, text = carrera[0], value=(carrera[1], carrera[2]))
+
+        listar_datos()        
